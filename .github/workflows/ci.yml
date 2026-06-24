@@ -108,22 +108,38 @@ jobs:
   integration-tests:
     needs: [build, lint]
     runs-on: ubuntu-latest
-    if: ${{ (github.event_name == 'schedule' || github.event.inputs.run_conformance == 'true') && secrets.TAILSCALE_API_KEY != '' }}
+    if: ${{ github.event_name == 'schedule' || github.event.inputs.run_conformance == 'true' }}
     steps:
+      - name: Check Tailscale credentials
+        id: credentials
+        env:
+          TAILSCALE_API_KEY: ${{ secrets.TAILSCALE_API_KEY }}
+        run: |
+          if [ -n "$TAILSCALE_API_KEY" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping integration tests because TAILSCALE_API_KEY is not configured."
+          fi
+
       - name: Checkout
+        if: steps.credentials.outputs.available == 'true'
         uses: actions/checkout@v7
 
       - name: Set up Go
+        if: steps.credentials.outputs.available == 'true'
         uses: actions/setup-go@v5
         with:
           go-version: "1.26"
 
       - name: Set up Pkl
+        if: steps.credentials.outputs.available == 'true'
         uses: pkl-community/setup-pkl@v0
         with:
           pkl-version: 0.31.1
 
       - name: Run integration tests
+        if: steps.credentials.outputs.available == 'true'
         env:
           TAILSCALE_API_KEY: ${{ secrets.TAILSCALE_API_KEY }}
           TAILSCALE_OAUTH_CLIENT_ID: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
@@ -136,7 +152,7 @@ jobs:
   conformance-tests:
     needs: [build, lint, pkl-validate, verify-schema]
     runs-on: ubuntu-latest
-    if: ${{ (github.event_name == 'schedule' || github.event.inputs.run_conformance == 'true') && secrets.TAILSCALE_API_KEY != '' }}
+    if: ${{ github.event_name == 'schedule' || github.event.inputs.run_conformance == 'true' }}
     timeout-minutes: 60
 
     strategy:
@@ -152,23 +168,40 @@ jobs:
     #   contents: read
 
     steps:
+      - name: Check Tailscale credentials
+        id: credentials
+        env:
+          TAILSCALE_API_KEY: ${{ secrets.TAILSCALE_API_KEY }}
+        run: |
+          if [ -n "$TAILSCALE_API_KEY" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping conformance tests because TAILSCALE_API_KEY is not configured."
+          fi
+
       - name: Checkout
+        if: steps.credentials.outputs.available == 'true'
         uses: actions/checkout@v7
 
       - name: Set up Go
+        if: steps.credentials.outputs.available == 'true'
         uses: actions/setup-go@v5
         with:
           go-version: "1.26"
 
       - name: Set up Pkl
+        if: steps.credentials.outputs.available == 'true'
         uses: pkl-community/setup-pkl@v0
         with:
           pkl-version: 0.31.1
 
       - name: Install plugin
+        if: steps.credentials.outputs.available == 'true'
         run: make install
 
       - name: Run conformance tests
+        if: steps.credentials.outputs.available == 'true'
         env:
           TAILSCALE_API_KEY: ${{ secrets.TAILSCALE_API_KEY }}
           TAILSCALE_OAUTH_CLIENT_ID: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
