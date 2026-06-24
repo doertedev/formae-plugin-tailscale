@@ -32,10 +32,14 @@ jobs:
         with:
           go-version: "1.26"
 
-      - name: Set up Pkl
-        uses: pkl-community/setup-pkl@v0
-        with:
-          pkl-version: 0.31.1
+      - name: Install Pkl
+        env:
+          PKL_VERSION: 0.31.1
+        run: |
+          curl -fsSL -o pkl "https://github.com/apple/pkl/releases/download/$PKL_VERSION/pkl-linux-amd64"
+          chmod +x pkl
+          sudo mv pkl /usr/local/bin/pkl
+          pkl --version
 
       - name: Build
         run: make build
@@ -65,10 +69,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Set up Pkl
-        uses: pkl-community/setup-pkl@v0
-        with:
-          pkl-version: 0.31.1
+      - name: Install Pkl
+        env:
+          PKL_VERSION: 0.31.1
+        run: |
+          curl -fsSL -o pkl "https://github.com/apple/pkl/releases/download/$PKL_VERSION/pkl-linux-amd64"
+          chmod +x pkl
+          sudo mv pkl /usr/local/bin/pkl
+          pkl --version
 
       - name: Validate Pkl schemas
         run: |
@@ -86,10 +94,14 @@ jobs:
         with:
           go-version: "1.26"
 
-      - name: Set up Pkl
-        uses: pkl-community/setup-pkl@v0
-        with:
-          pkl-version: 0.31.1
+      - name: Install Pkl
+        env:
+          PKL_VERSION: 0.31.1
+        run: |
+          curl -fsSL -o pkl "https://github.com/apple/pkl/releases/download/$PKL_VERSION/pkl-linux-amd64"
+          chmod +x pkl
+          sudo mv pkl /usr/local/bin/pkl
+          pkl --version
 
       - name: Verify schema
         run: make verify-schema
@@ -132,11 +144,15 @@ jobs:
         with:
           go-version: "1.26"
 
-      - name: Set up Pkl
+      - name: Install Pkl
         if: steps.credentials.outputs.available == 'true'
-        uses: pkl-community/setup-pkl@v0
-        with:
-          pkl-version: 0.31.1
+        env:
+          PKL_VERSION: 0.31.1
+        run: |
+          curl -fsSL -o pkl "https://github.com/apple/pkl/releases/download/$PKL_VERSION/pkl-linux-amd64"
+          chmod +x pkl
+          sudo mv pkl /usr/local/bin/pkl
+          pkl --version
 
       - name: Run integration tests
         if: steps.credentials.outputs.available == 'true'
@@ -190,11 +206,15 @@ jobs:
         with:
           go-version: "1.26"
 
-      - name: Set up Pkl
+      - name: Install Pkl
         if: steps.credentials.outputs.available == 'true'
-        uses: pkl-community/setup-pkl@v0
-        with:
-          pkl-version: 0.31.1
+        env:
+          PKL_VERSION: 0.31.1
+        run: |
+          curl -fsSL -o pkl "https://github.com/apple/pkl/releases/download/$PKL_VERSION/pkl-linux-amd64"
+          chmod +x pkl
+          sudo mv pkl /usr/local/bin/pkl
+          pkl --version
 
       - name: Install plugin
         if: steps.credentials.outputs.available == 'true'
