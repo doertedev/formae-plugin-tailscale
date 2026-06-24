@@ -3,9 +3,10 @@ module github.com/doertedev/formae-plugin-tailscale
 go 1.26.0
 
 require (
-	github.com/platform-engineering-labs/formae/pkg/model v0.1.23
+	github.com/platform-engineering-labs/formae/pkg/model v0.1.25
 	github.com/platform-engineering-labs/formae/pkg/plugin v0.2.1
 	github.com/platform-engineering-labs/formae/pkg/plugin-conformance-tests v0.2.2
+	tailscale.com/client/tailscale/v2 v2.10.1
 )
 
 require (
@@ -92,7 +93,6 @@ require (
 	google.golang.org/grpc v1.78.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 	resty.dev/v3 v3.0.0-beta.6.0.20260127085140-f531c9de7027 // indirect
-	tailscale.com/client/tailscale/v2 v2.10.1 // indirect
 )
 
 replace ergo.services/ergo => github.com/JeroenSoeters/ergo v1.999.320-pel.1
