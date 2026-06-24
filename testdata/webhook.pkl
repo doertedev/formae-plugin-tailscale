@@ -1,0 +1,18 @@
+// SPDX-License-Identifier: Apache-2.0
+
+amends "@formae/forma.pkl"
+
+import "@tailscale/events/webhook.pkl"
+import "./config/vars.pkl" as v
+
+forma {
+  v.stack
+  v.target
+
+  new webhook.Webhook {
+    label = "webhook-\(v.testRunID)"
+    endpointUrl = "https://example.com/formae-test-\(v.testRunID)"
+    providerType = "slack"
+    subscriptions = new Listing { "nodeCreated" }
+  }
+}

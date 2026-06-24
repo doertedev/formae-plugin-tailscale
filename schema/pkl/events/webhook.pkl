@@ -1,0 +1,53 @@
+// SPDX-License-Identifier: Apache-2.0
+
+module tailscale.events.webhook
+
+import "@formae/formae.pkl"
+import "../tailscale.pkl"
+
+const type = "TAILSCALE::Events::Webhook"
+
+open class WebhookResolvable extends formae.Resolvable {
+    hidden type = module.type
+
+    hidden endpointId: WebhookResolvable = (this) { property = "endpointId" }
+    hidden secret: WebhookResolvable = (this) { property = "secret" }
+}
+
+@tailscale.ResourceHint {
+    type = module.type
+    identifier = "endpointId"
+    portable = true
+}
+open class Webhook extends formae.Resource {
+    @tailscale.FieldHint { required = true; createOnly = true }
+    endpointUrl: String
+
+    @tailscale.FieldHint { createOnly = true }
+    providerType: (""|"slack"|"mattermost"|"googlechat"|"discord") = ""
+
+    @tailscale.FieldHint { required = true }
+    subscriptions: Listing<String>
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    endpointId: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    secret: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    creatorLoginName: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    createdAt: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    lastModifiedAt: String?
+
+    local parent = this
+
+    hidden res: WebhookResolvable = new {
+        label = parent.label
+        stack = parent.stack?.label
+    }
+}

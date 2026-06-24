@@ -1,0 +1,38 @@
+// SPDX-License-Identifier: Apache-2.0
+
+module tailscale
+
+import "@formae/formae.pkl"
+
+open class Config {
+  fixed type: String = "TAILSCALE"
+
+  @formae.ConfigFieldHint { createOnly = true }
+  apiKey: String?
+
+  @formae.ConfigFieldHint { createOnly = true }
+  oauthClientID: String?
+
+  @formae.ConfigFieldHint { createOnly = true }
+  oauthClientSecret: String?
+
+  @formae.ConfigFieldHint { createOnly = true }
+  oauthScopes: Listing<String>?
+
+  @formae.ConfigFieldHint { createOnly = true }
+  tailnet: String = "-"
+
+  @formae.ConfigFieldHint { createOnly = true }
+  baseUrl: String?
+
+  /// Per-call Tailscale API timeout in seconds. Defaults to 15 when omitted;
+  /// raise it for large tailnets where Devices/Keys list calls can be slow.
+  @formae.ConfigFieldHint { createOnly = true }
+  apiTimeoutSeconds: Int?
+}
+
+class FieldHint extends formae.FieldHint {}
+
+class ResourceHint extends formae.ResourceHint {
+    extractable = false
+}

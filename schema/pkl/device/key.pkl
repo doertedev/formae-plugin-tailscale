@@ -1,0 +1,34 @@
+// SPDX-License-Identifier: Apache-2.0
+
+module tailscale.device.key
+
+import "@formae/formae.pkl"
+import "../tailscale.pkl"
+
+const type = "TAILSCALE::Device::Key"
+
+open class DeviceKeyResolvable extends formae.Resolvable {
+    hidden type = module.type
+
+    hidden deviceId: DeviceKeyResolvable = (this) { property = "deviceId" }
+}
+
+@tailscale.ResourceHint {
+    type = module.type
+    identifier = "deviceId"
+    portable = true
+}
+open class DeviceKey extends formae.Resource {
+    @tailscale.FieldHint { required = true; createOnly = true }
+    deviceId: String
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    keyExpiryDisabled: Boolean?
+
+    local parent = this
+
+    hidden res: DeviceKeyResolvable = new {
+        label = parent.label
+        stack = parent.stack?.label
+    }
+}

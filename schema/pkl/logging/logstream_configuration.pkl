@@ -1,0 +1,85 @@
+// SPDX-License-Identifier: Apache-2.0
+
+module tailscale.logging.logstream_configuration
+
+import "@formae/formae.pkl"
+import "../tailscale.pkl"
+
+const type = "TAILSCALE::Logging::LogstreamConfiguration"
+
+open class LogstreamConfigurationResolvable extends formae.Resolvable {
+    hidden type = module.type
+
+    hidden logType: LogstreamConfigurationResolvable = (this) { property = "logType" }
+}
+
+@tailscale.ResourceHint {
+    type = module.type
+    identifier = "logType"
+    portable = true
+}
+open class LogstreamConfiguration extends formae.Resource {
+    @tailscale.FieldHint { createOnly = true; hasProviderDefault = true }
+    logType: ("configuration"|"network")?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    destinationType: ("splunk"|"elastic"|"panther"|"cribl"|"datadog"|"axiom"|"s3"|"gcs")?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    url: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    user: String?
+
+    @tailscale.FieldHint { writeOnly = true; hasProviderDefault = true }
+    token: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    uploadPeriodMinutes: Int?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    compressionFormat: ("none"|"zstd"|"gzip")?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    s3Bucket: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    s3Region: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    s3KeyPrefix: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    s3AuthenticationType: ("accesskey"|"rolearn")?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    s3AccessKeyId: String?
+
+    @tailscale.FieldHint { writeOnly = true; hasProviderDefault = true }
+    s3SecretAccessKey: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    s3RoleArn: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    s3ExternalId: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    gcsBucket: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    gcsKeyPrefix: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    gcsScopes: Listing<String>?
+
+    @tailscale.FieldHint { writeOnly = true; hasProviderDefault = true }
+    gcsCredentials: String?
+
+    local parent = this
+
+    hidden res: LogstreamConfigurationResolvable = new {
+        label = parent.label
+        stack = parent.stack?.label
+    }
+}

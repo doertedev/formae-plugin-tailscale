@@ -1,0 +1,18 @@
+// SPDX-License-Identifier: Apache-2.0
+
+amends "@formae/forma.pkl"
+
+import "@tailscale/network/service.pkl"
+import "./config/vars.pkl" as v
+
+forma {
+  v.stack
+  v.target
+
+  new service.Service {
+    label = "service-\(v.testRunID)"
+    name = "svc:formae-test-\(v.testRunID)-service"
+    comment = "formae-test-\(v.testRunID)-updated"
+    ports = new Listing { "443"; "80" }
+  }
+}

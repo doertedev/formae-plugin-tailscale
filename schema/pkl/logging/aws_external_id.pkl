@@ -1,0 +1,37 @@
+// SPDX-License-Identifier: Apache-2.0
+
+module tailscale.logging.aws_external_id
+
+import "@formae/formae.pkl"
+import "../tailscale.pkl"
+
+const type = "TAILSCALE::Logging::AWSExternalID"
+
+open class AWSExternalIDResolvable extends formae.Resolvable {
+    hidden type = module.type
+
+    hidden externalId: AWSExternalIDResolvable = (this) { property = "externalId" }
+}
+
+@tailscale.ResourceHint {
+    type = module.type
+    identifier = "externalId"
+    portable = true
+}
+open class AWSExternalID extends formae.Resource {
+    @tailscale.FieldHint { hasProviderDefault = true }
+    externalId: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    tailscaleAwsAccountId: String?
+
+    @tailscale.FieldHint { createOnly = true; hasProviderDefault = true }
+    reusable: Boolean?
+
+    local parent = this
+
+    hidden res: AWSExternalIDResolvable = new {
+        label = parent.label
+        stack = parent.stack?.label
+    }
+}

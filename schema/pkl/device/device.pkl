@@ -1,0 +1,85 @@
+// SPDX-License-Identifier: Apache-2.0
+
+module tailscale.device.device
+
+import "@formae/formae.pkl"
+import "../tailscale.pkl"
+
+const type = "TAILSCALE::Device::Device"
+
+open class DeviceResolvable extends formae.Resolvable {
+    hidden type = module.type
+
+    hidden nodeId: DeviceResolvable = (this) { property = "nodeId" }
+}
+
+@tailscale.ResourceHint {
+    type = module.type
+    identifier = "nodeId"
+    portable = true
+}
+open class Device extends formae.Resource {
+    @tailscale.FieldHint { hasProviderDefault = true }
+    nodeId: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    id: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    name: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    hostname: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    authorized: Boolean?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    user: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    tags: Listing<String>?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    addresses: Listing<String>?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    clientVersion: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    os: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    keyExpiryDisabled: Boolean?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    blocksIncomingConnections: Boolean?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    isEphemeral: Boolean?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    isExternal: Boolean?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    connectedToControl: Boolean?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    updateAvailable: Boolean?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    createdAt: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    expiresAt: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    lastSeen: String?
+
+    local parent = this
+
+    hidden res: DeviceResolvable = new {
+        label = parent.label
+        stack = parent.stack?.label
+    }
+}

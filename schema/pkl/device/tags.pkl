@@ -1,0 +1,34 @@
+// SPDX-License-Identifier: Apache-2.0
+
+module tailscale.device.tags
+
+import "@formae/formae.pkl"
+import "../tailscale.pkl"
+
+const type = "TAILSCALE::Device::Tags"
+
+open class DeviceTagsResolvable extends formae.Resolvable {
+    hidden type = module.type
+
+    hidden deviceId: DeviceTagsResolvable = (this) { property = "deviceId" }
+}
+
+@tailscale.ResourceHint {
+    type = module.type
+    identifier = "deviceId"
+    portable = true
+}
+open class DeviceTags extends formae.Resource {
+    @tailscale.FieldHint { required = true; createOnly = true }
+    deviceId: String
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    tags: Listing<String>?
+
+    local parent = this
+
+    hidden res: DeviceTagsResolvable = new {
+        label = parent.label
+        stack = parent.stack?.label
+    }
+}

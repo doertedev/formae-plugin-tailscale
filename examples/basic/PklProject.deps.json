@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "resolvedDependencies": {
+    "package://hub.platform.engineering/plugins/pkl/schema/pkl/formae/formae@0": {
+      "type": "remote",
+      "uri": "projectpackage://hub.platform.engineering/plugins/pkl/schema/pkl/formae/formae@0.86.1",
+      "checksums": {
+        "sha256": "1b6f02455c949e77241e4c28ba7f2a873cc22ce4a8621022449ff23c40e131be"
+      }
+    },
+    "package://localhost/plugins/tailscale/schema/pkl/tailscale@0": {
+      "type": "local",
+      "uri": "projectpackage://localhost/plugins/tailscale/schema/pkl/tailscale@0.1.0",
+      "path": "../../schema/pkl"
+    }
+  }
+}

@@ -1,0 +1,66 @@
+// SPDX-License-Identifier: Apache-2.0
+
+module tailscale.iam.auth_key
+
+import "@formae/formae.pkl"
+import "../tailscale.pkl"
+
+const type = "TAILSCALE::IAM::AuthKey"
+
+open class AuthKeyResolvable extends formae.Resolvable {
+    hidden type = module.type
+
+    hidden id: AuthKeyResolvable = (this) { property = "id" }
+    hidden key: AuthKeyResolvable = (this) { property = "key" }
+}
+
+@tailscale.ResourceHint {
+    type = module.type
+    identifier = "id"
+    portable = true
+}
+open class AuthKey extends formae.Resource {
+    @tailscale.FieldHint { createOnly = true; hasProviderDefault = true }
+    reusable: Boolean = false
+
+    @tailscale.FieldHint { createOnly = true; hasProviderDefault = true }
+    ephemeral: Boolean = false
+
+    @tailscale.FieldHint { createOnly = true; hasProviderDefault = true }
+    tags: Listing<String>?
+
+    @tailscale.FieldHint { createOnly = true; hasProviderDefault = true }
+    preauthorized: Boolean = false
+
+    /// Expiration in seconds. Tailscale defaults to 90 days when omitted.
+    @tailscale.FieldHint { createOnly = true; hasProviderDefault = true }
+    expirySeconds: Int?
+
+    @tailscale.FieldHint { createOnly = true; hasProviderDefault = true }
+    description: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    id: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    key: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    createdAt: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    expiresAt: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    invalid: Boolean?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    userId: String?
+
+    local parent = this
+
+    hidden res: AuthKeyResolvable = new {
+        label = parent.label
+        stack = parent.stack?.label
+    }
+}

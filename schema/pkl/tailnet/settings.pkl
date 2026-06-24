@@ -1,0 +1,58 @@
+// SPDX-License-Identifier: Apache-2.0
+
+module tailscale.tailnet.settings
+
+import "@formae/formae.pkl"
+import "../tailscale.pkl"
+
+const type = "TAILSCALE::Tailnet::Settings"
+
+open class TailnetSettingsResolvable extends formae.Resolvable {
+    hidden type = module.type
+
+    hidden tailnet: TailnetSettingsResolvable = (this) { property = "tailnet" }
+}
+
+@tailscale.ResourceHint {
+    type = module.type
+    identifier = "tailnet"
+    portable = true
+}
+open class TailnetSettings extends formae.Resource {
+    @tailscale.FieldHint { hasProviderDefault = true }
+    tailnet: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    devicesApprovalOn: Boolean?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    devicesAutoUpdatesOn: Boolean?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    devicesKeyDurationDays: Int?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    usersApprovalOn: Boolean?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    usersRoleAllowedToJoinExternalTailnets: ("none"|"admin"|"member")?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    networkFlowLoggingOn: Boolean?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    regionalRoutingOn: Boolean?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    postureIdentityCollectionOn: Boolean?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    httpsEnabled: Boolean?
+
+    local parent = this
+
+    hidden res: TailnetSettingsResolvable = new {
+        label = parent.label
+        stack = parent.stack?.label
+    }
+}

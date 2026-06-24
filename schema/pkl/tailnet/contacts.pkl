@@ -1,0 +1,58 @@
+// SPDX-License-Identifier: Apache-2.0
+
+module tailscale.tailnet.contacts
+
+import "@formae/formae.pkl"
+import "../tailscale.pkl"
+
+const type = "TAILSCALE::Tailnet::Contacts"
+
+open class ContactsResolvable extends formae.Resolvable {
+    hidden type = module.type
+
+    hidden tailnet: ContactsResolvable = (this) { property = "tailnet" }
+}
+
+@tailscale.ResourceHint {
+    type = module.type
+    identifier = "tailnet"
+    portable = true
+}
+open class Contacts extends formae.Resource {
+    @tailscale.FieldHint { hasProviderDefault = true }
+    tailnet: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    accountEmail: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    supportEmail: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    securityEmail: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    accountNeedsVerification: Boolean?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    accountFallbackEmail: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    supportNeedsVerification: Boolean?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    supportFallbackEmail: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    securityNeedsVerification: Boolean?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    securityFallbackEmail: String?
+
+    local parent = this
+
+    hidden res: ContactsResolvable = new {
+        label = parent.label
+        stack = parent.stack?.label
+    }
+}

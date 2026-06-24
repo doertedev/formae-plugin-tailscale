@@ -1,0 +1,46 @@
+// SPDX-License-Identifier: Apache-2.0
+
+module tailscale.network.service
+
+import "@formae/formae.pkl"
+import "../tailscale.pkl"
+
+const type = "TAILSCALE::Network::Service"
+
+open class ServiceResolvable extends formae.Resolvable {
+    hidden type = module.type
+
+    hidden name: ServiceResolvable = (this) { property = "name" }
+}
+
+@tailscale.ResourceHint {
+    type = module.type
+    identifier = "name"
+    portable = true
+}
+open class Service extends formae.Resource {
+    @tailscale.FieldHint { required = true; createOnly = true }
+    name: String
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    comment: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    addrs: Listing<String>?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    ports: Listing<String>?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    tags: Listing<String>?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    annotations: Mapping<String, String>?
+
+    local parent = this
+
+    hidden res: ServiceResolvable = new {
+        label = parent.label
+        stack = parent.stack?.label
+    }
+}

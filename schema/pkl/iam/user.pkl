@@ -1,0 +1,64 @@
+// SPDX-License-Identifier: Apache-2.0
+
+module tailscale.iam.user
+
+import "@formae/formae.pkl"
+import "../tailscale.pkl"
+
+const type = "TAILSCALE::IAM::User"
+
+open class UserResolvable extends formae.Resolvable {
+    hidden type = module.type
+
+    hidden id: UserResolvable = (this) { property = "id" }
+}
+
+@tailscale.ResourceHint {
+    type = module.type
+    identifier = "id"
+    portable = true
+}
+open class User extends formae.Resource {
+    @tailscale.FieldHint { hasProviderDefault = true }
+    id: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    displayName: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    loginName: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    profilePicUrl: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    tailnetId: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    type: ("member"|"shared")?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    role: ("owner"|"member"|"admin"|"it-admin"|"network-admin"|"billing-admin"|"auditor")?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    status: ("active"|"idle"|"suspended"|"needs-approval"|"over-billing-limit")?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    deviceCount: Int?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    currentlyConnected: Boolean?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    createdAt: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    lastSeen: String?
+
+    local parent = this
+
+    hidden res: UserResolvable = new {
+        label = parent.label
+        stack = parent.stack?.label
+    }
+}

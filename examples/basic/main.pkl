@@ -1,0 +1,59 @@
+// SPDX-License-Identifier: Apache-2.0
+
+amends "@formae/forma.pkl"
+
+import "@formae/formae.pkl"
+import "@tailscale/tailscale.pkl"
+import "@tailscale/events/webhook.pkl"
+import "@tailscale/iam/auth_key.pkl"
+import "@tailscale/iam/oauth_client.pkl"
+import "@tailscale/network/service.pkl"
+import "@tailscale/tailnet/settings.pkl"
+
+forma {
+  new formae.Stack {
+    label = "tailscale-example"
+    description = "Example Tailscale resources"
+  }
+
+  new formae.Target {
+    label = "tailscale"
+    config = new tailscale.Config {
+      apiKey = read?("env:TAILSCALE_API_KEY")
+      tailnet = read?("env:TAILSCALE_TAILNET") ?? "-"
+    }
+  }
+
+  new auth_key.AuthKey {
+    label = "example-auth-key"
+    reusable = true
+    preauthorized = false
+    expirySeconds = 3600
+    description = "formae-example"
+  }
+
+  new oauth_client.OAuthClient {
+    label = "example-oauth-client"
+    description = "formae-example"
+    scopes = new Listing { "auth_keys:read" }
+  }
+
+  new webhook.Webhook {
+    label = "example-webhook"
+    endpointUrl = "https://example.com/tailscale-webhook"
+    subscriptions = new Listing { "nodeCreated" }
+  }
+
+  new settings.TailnetSettings {
+    label = "example-tailnet-settings"
+    networkFlowLoggingOn = true
+    devicesAutoUpdatesOn = true
+  }
+
+  new service.Service {
+    label = "example-service"
+    name = "svc:formae-example-service"
+    comment = "formae-example"
+    ports = new Listing { "443" }
+  }
+}

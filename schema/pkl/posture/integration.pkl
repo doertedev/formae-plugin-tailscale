@@ -1,0 +1,46 @@
+// SPDX-License-Identifier: Apache-2.0
+
+module tailscale.posture.integration
+
+import "@formae/formae.pkl"
+import "../tailscale.pkl"
+
+const type = "TAILSCALE::Posture::Integration"
+
+open class PostureIntegrationResolvable extends formae.Resolvable {
+    hidden type = module.type
+
+    hidden id: PostureIntegrationResolvable = (this) { property = "id" }
+}
+
+@tailscale.ResourceHint {
+    type = module.type
+    identifier = "id"
+    portable = true
+}
+open class PostureIntegration extends formae.Resource {
+    @tailscale.FieldHint { hasProviderDefault = true }
+    id: String?
+
+    @tailscale.FieldHint { required = true; createOnly = true }
+    provider: ("falcon"|"fleet"|"huntress"|"intune"|"jamfpro"|"kandji"|"kolide"|"sentinelone")
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    cloudId: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    clientId: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    tenantId: String?
+
+    @tailscale.FieldHint { writeOnly = true; hasProviderDefault = true }
+    clientSecret: String?
+
+    local parent = this
+
+    hidden res: PostureIntegrationResolvable = new {
+        label = parent.label
+        stack = parent.stack?.label
+    }
+}

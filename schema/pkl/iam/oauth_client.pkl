@@ -1,0 +1,53 @@
+// SPDX-License-Identifier: Apache-2.0
+
+module tailscale.iam.oauth_client
+
+import "@formae/formae.pkl"
+import "../tailscale.pkl"
+
+const type = "TAILSCALE::IAM::OAuthClient"
+
+open class OAuthClientResolvable extends formae.Resolvable {
+    hidden type = module.type
+
+    hidden id: OAuthClientResolvable = (this) { property = "id" }
+    hidden key: OAuthClientResolvable = (this) { property = "key" }
+}
+
+@tailscale.ResourceHint {
+    type = module.type
+    identifier = "id"
+    portable = true
+}
+open class OAuthClient extends formae.Resource {
+    @tailscale.FieldHint { hasProviderDefault = true }
+    description: String?
+
+    @tailscale.FieldHint { required = true }
+    scopes: Listing<String>
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    tags: Listing<String>?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    id: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    key: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    createdAt: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    updatedAt: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    userId: String?
+
+    local parent = this
+
+    hidden res: OAuthClientResolvable = new {
+        label = parent.label
+        stack = parent.stack?.label
+    }
+}

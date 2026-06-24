@@ -1,0 +1,17 @@
+// SPDX-License-Identifier: Apache-2.0
+
+amends "@formae/forma.pkl"
+
+import "@tailscale/iam/oauth_client.pkl"
+import "./config/vars.pkl" as v
+
+forma {
+  v.stack
+  v.target
+
+  new oauth_client.OAuthClient {
+    label = "oauth-client-\(v.testRunID)"
+    description = "formae-test-\(v.testRunID)"
+    scopes = new Listing { "auth_keys:read" }
+  }
+}

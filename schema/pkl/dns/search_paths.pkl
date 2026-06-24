@@ -1,0 +1,34 @@
+// SPDX-License-Identifier: Apache-2.0
+
+module tailscale.dns.search_paths
+
+import "@formae/formae.pkl"
+import "../tailscale.pkl"
+
+const type = "TAILSCALE::DNS::SearchPaths"
+
+open class DNSSearchPathsResolvable extends formae.Resolvable {
+    hidden type = module.type
+
+    hidden tailnet: DNSSearchPathsResolvable = (this) { property = "tailnet" }
+}
+
+@tailscale.ResourceHint {
+    type = module.type
+    identifier = "tailnet"
+    portable = true
+}
+open class DNSSearchPaths extends formae.Resource {
+    @tailscale.FieldHint { hasProviderDefault = true }
+    tailnet: String?
+
+    @tailscale.FieldHint { required = true }
+    searchPaths: Listing<String>
+
+    local parent = this
+
+    hidden res: DNSSearchPathsResolvable = new {
+        label = parent.label
+        stack = parent.stack?.label
+    }
+}

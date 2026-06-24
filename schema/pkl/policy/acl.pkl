@@ -1,0 +1,38 @@
+// SPDX-License-Identifier: Apache-2.0
+
+module tailscale.policy.acl
+
+import "@formae/formae.pkl"
+import "../tailscale.pkl"
+
+const type = "TAILSCALE::Policy::ACL"
+
+open class ACLResolvable extends formae.Resolvable {
+    hidden type = module.type
+
+    hidden tailnet: ACLResolvable = (this) { property = "tailnet" }
+    hidden etag: ACLResolvable = (this) { property = "etag" }
+}
+
+@tailscale.ResourceHint {
+    type = module.type
+    identifier = "tailnet"
+    portable = true
+}
+open class ACL extends formae.Resource {
+    @tailscale.FieldHint { required = true }
+    policy: String
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    tailnet: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    etag: String?
+
+    local parent = this
+
+    hidden res: ACLResolvable = new {
+        label = parent.label
+        stack = parent.stack?.label
+    }
+}

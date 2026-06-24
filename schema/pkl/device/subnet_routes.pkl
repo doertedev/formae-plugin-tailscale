@@ -1,0 +1,37 @@
+// SPDX-License-Identifier: Apache-2.0
+
+module tailscale.device.subnet_routes
+
+import "@formae/formae.pkl"
+import "../tailscale.pkl"
+
+const type = "TAILSCALE::Device::SubnetRoutes"
+
+open class DeviceSubnetRoutesResolvable extends formae.Resolvable {
+    hidden type = module.type
+
+    hidden deviceId: DeviceSubnetRoutesResolvable = (this) { property = "deviceId" }
+}
+
+@tailscale.ResourceHint {
+    type = module.type
+    identifier = "deviceId"
+    portable = true
+}
+open class DeviceSubnetRoutes extends formae.Resource {
+    @tailscale.FieldHint { required = true; createOnly = true }
+    deviceId: String
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    routes: Listing<String>?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    advertisedRoutes: Listing<String>?
+
+    local parent = this
+
+    hidden res: DeviceSubnetRoutesResolvable = new {
+        label = parent.label
+        stack = parent.stack?.label
+    }
+}

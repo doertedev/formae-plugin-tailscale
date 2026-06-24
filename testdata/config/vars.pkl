@@ -1,0 +1,21 @@
+// SPDX-License-Identifier: Apache-2.0
+
+import "@formae/formae.pkl"
+import "@tailscale/tailscale.pkl"
+
+testRunID = read("env:FORMAE_TEST_RUN_ID")
+
+stack = new formae.Stack {
+  label = "formae-conformance-test"
+  description = "formae conformance test for the tailscale plugin"
+}
+
+target = new formae.Target {
+  label = "tailscale-target"
+  config = new tailscale.Config {
+    apiKey = read?("env:TAILSCALE_API_KEY")
+    oauthClientID = read?("env:TAILSCALE_OAUTH_CLIENT_ID")
+    oauthClientSecret = read?("env:TAILSCALE_OAUTH_CLIENT_SECRET")
+    tailnet = read?("env:TAILSCALE_TAILNET") ?? "-"
+  }
+}

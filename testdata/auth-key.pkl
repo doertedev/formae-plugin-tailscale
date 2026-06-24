@@ -1,0 +1,20 @@
+// SPDX-License-Identifier: Apache-2.0
+
+amends "@formae/forma.pkl"
+
+import "@tailscale/iam/auth_key.pkl"
+import "./config/vars.pkl" as v
+
+forma {
+  v.stack
+  v.target
+
+  new auth_key.AuthKey {
+    label = "auth-key-\(v.testRunID)"
+    reusable = true
+    ephemeral = false
+    preauthorized = false
+    expirySeconds = 3600
+    description = "formae-test-\(v.testRunID)"
+  }
+}

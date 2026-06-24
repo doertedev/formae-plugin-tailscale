@@ -1,0 +1,34 @@
+// SPDX-License-Identifier: Apache-2.0
+
+module tailscale.dns.split_nameservers
+
+import "@formae/formae.pkl"
+import "../tailscale.pkl"
+
+const type = "TAILSCALE::DNS::SplitNameservers"
+
+open class DNSSplitNameserversResolvable extends formae.Resolvable {
+    hidden type = module.type
+
+    hidden tailnet: DNSSplitNameserversResolvable = (this) { property = "tailnet" }
+}
+
+@tailscale.ResourceHint {
+    type = module.type
+    identifier = "tailnet"
+    portable = true
+}
+open class DNSSplitNameservers extends formae.Resource {
+    @tailscale.FieldHint { hasProviderDefault = true }
+    tailnet: String?
+
+    @tailscale.FieldHint { required = true }
+    splitDNS: Mapping<String, Listing<String>>
+
+    local parent = this
+
+    hidden res: DNSSplitNameserversResolvable = new {
+        label = parent.label
+        stack = parent.stack?.label
+    }
+}

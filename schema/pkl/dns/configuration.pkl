@@ -1,0 +1,53 @@
+// SPDX-License-Identifier: Apache-2.0
+
+module tailscale.dns.configuration
+
+import "@formae/formae.pkl"
+import "../tailscale.pkl"
+
+const type = "TAILSCALE::DNS::Configuration"
+
+open class DNSConfigurationResolvable extends formae.Resolvable {
+    hidden type = module.type
+
+    hidden tailnet: DNSConfigurationResolvable = (this) { property = "tailnet" }
+}
+
+class Resolver {
+    address: String?
+    useWithExitNode: Boolean?
+}
+
+class Preferences {
+    overrideLocalDNS: Boolean?
+    magicDNS: Boolean?
+}
+
+@tailscale.ResourceHint {
+    type = module.type
+    identifier = "tailnet"
+    portable = true
+}
+open class DNSConfiguration extends formae.Resource {
+    @tailscale.FieldHint { hasProviderDefault = true }
+    tailnet: String?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    nameservers: Listing<Resolver>?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    splitDNS: Mapping<String, Listing<Resolver>>?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    searchPaths: Listing<String>?
+
+    @tailscale.FieldHint { hasProviderDefault = true }
+    preferences: Preferences?
+
+    local parent = this
+
+    hidden res: DNSConfigurationResolvable = new {
+        label = parent.label
+        stack = parent.stack?.label
+    }
+}
