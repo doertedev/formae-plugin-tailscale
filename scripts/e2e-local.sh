@@ -36,7 +36,7 @@ cp -R "${ROOT_DIR}/schema/pkl" "${WORK_DIR}/schema/pkl"
 
 # Derive the formae version from the plugin manifest so this script stays in
 # sync with minFormaeVersion (auto-bumped by `make build`) instead of drifting.
-FORMAE_VERSION="${FORMAE_VERSION:-$(pkl eval -x minFormaeVersion "${ROOT_DIR}/formae-plugin.pkl" 2>/dev/null || echo "0.86.1")}"
+FORMAE_VERSION="${FORMAE_VERSION:-$(pkl eval -x minFormaeVersion "${ROOT_DIR}/formae-plugin.pkl" 2>/dev/null || echo "0.87.0")}"
 
 cat > "${WORK_DIR}/PklProject" <<PKL
 amends "pkl:Project"

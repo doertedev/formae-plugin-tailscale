@@ -3,9 +3,9 @@
   "resolvedDependencies": {
     "package://hub.platform.engineering/plugins/pkl/schema/pkl/formae/formae@0": {
       "type": "remote",
-      "uri": "projectpackage://hub.platform.engineering/plugins/pkl/schema/pkl/formae/formae@0.86.1",
+      "uri": "projectpackage://hub.platform.engineering/plugins/pkl/schema/pkl/formae/formae@0.87.0",
       "checksums": {
-        "sha256": "1b6f02455c949e77241e4c28ba7f2a873cc22ce4a8621022449ff23c40e131be"
+        "sha256": "1293e8d9f297dfed879c33cf34fd46e183fe4d3e38c4acf6212f53b8f673435a"
       }
     },
     "package://localhost/plugins/tailscale/schema/pkl/tailscale@0": {

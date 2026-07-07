@@ -4,7 +4,7 @@ A [formae](https://github.com/platform-engineering-labs/formae) resource
 plugin for managing [Tailscale](https://tailscale.com/) objects as formae
 resources.
 
-Status: `v0.1.0`. Targets formae `>= 0.86.1` (the
+Status: `v0.1.0`. Targets formae `>= 0.87.0` (the
 `minFormaeVersion` declared in [formae-plugin.pkl](formae-plugin.pkl)).
 
 ## Who Needs This Plugin
