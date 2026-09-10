@@ -8,7 +8,7 @@
 // Plugin name used as the directory name and binary name.
 name = "tailscale"
 
-version = "0.1.0"
+version = "0.1.1"
 
 // Namespace appears in resource type IDs as the uppercase prefix: <NAMESPACE>::<Module>::<Resource>.
 namespace = "TAILSCALE"
