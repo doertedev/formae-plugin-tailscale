@@ -63,9 +63,15 @@ func settingsUpdateRequest(props *TailnetSettingsProperties) ts.UpdateTailnetSet
 		DevicesKeyDurationDays:      props.DevicesKeyDurationDays,
 		UsersApprovalOn:             props.UsersApprovalOn,
 		NetworkFlowLoggingOn:        props.NetworkFlowLoggingOn,
-		RegionalRoutingOn:           props.RegionalRoutingOn,
 		PostureIdentityCollectionOn: props.PostureIdentityCollectionOn,
 		HTTPSEnabled:                props.HTTPSEnabled,
+	}
+	if props.RegionalRoutingOn != nil {
+		routeSelection := ts.RouteSelectionActivePassiveFailover
+		if *props.RegionalRoutingOn {
+			routeSelection = ts.RouteSelectionRegionalRouting
+		}
+		req.RouteSelection = &routeSelection
 	}
 	if props.UsersRoleAllowedToJoinExternalTailnets != "" {
 		role := ts.RoleAllowedToJoinExternalTailnets(props.UsersRoleAllowedToJoinExternalTailnets)
@@ -78,6 +84,7 @@ func settingsFrom(s *ts.TailnetSettings, nativeID string) *TailnetSettingsProper
 	if s == nil {
 		return nil
 	}
+	regionalRoutingOn := s.RouteSelection == ts.RouteSelectionRegionalRouting
 	return &TailnetSettingsProperties{
 		Tailnet:                                nativeID,
 		DevicesApprovalOn:                      &s.DevicesApprovalOn,
@@ -86,7 +93,7 @@ func settingsFrom(s *ts.TailnetSettings, nativeID string) *TailnetSettingsProper
 		UsersApprovalOn:                        &s.UsersApprovalOn,
 		UsersRoleAllowedToJoinExternalTailnets: string(s.UsersRoleAllowedToJoinExternalTailnets),
 		NetworkFlowLoggingOn:                   &s.NetworkFlowLoggingOn,
-		RegionalRoutingOn:                      &s.RegionalRoutingOn,
+		RegionalRoutingOn:                      &regionalRoutingOn,
 		PostureIdentityCollectionOn:            &s.PostureIdentityCollectionOn,
 		HTTPSEnabled:                           &s.HTTPSEnabled,
 	}

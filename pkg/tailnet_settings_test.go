@@ -83,7 +83,6 @@ func TestTailnetSettingsPartialUpdateLeavesOmittedUnchanged(t *testing.T) {
 		"devicesApprovalOn":           captured.DevicesApprovalOn,
 		"devicesAutoUpdatesOn":        captured.DevicesAutoUpdatesOn,
 		"usersApprovalOn":             captured.UsersApprovalOn,
-		"regionalRoutingOn":           captured.RegionalRoutingOn,
 		"postureIdentityCollectionOn": captured.PostureIdentityCollectionOn,
 		"httpsEnabled":                captured.HTTPSEnabled,
 	} {
@@ -96,6 +95,27 @@ func TestTailnetSettingsPartialUpdateLeavesOmittedUnchanged(t *testing.T) {
 	}
 	if captured.UsersRoleAllowedToJoinExternalTailnets != nil {
 		t.Fatalf("omitted role should be nil, got %v", *captured.UsersRoleAllowedToJoinExternalTailnets)
+	}
+	if captured.RouteSelection != nil {
+		t.Fatalf("omitted routeSelection should be nil, got %q", *captured.RouteSelection)
+	}
+}
+
+func TestTailnetSettingsRegionalRoutingUsesRouteSelection(t *testing.T) {
+	for _, tt := range []struct {
+		name string
+		on   bool
+		want ts.RouteSelection
+	}{
+		{name: "enabled", on: true, want: ts.RouteSelectionRegionalRouting},
+		{name: "disabled", on: false, want: ts.RouteSelectionActivePassiveFailover},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			req := settingsUpdateRequest(&TailnetSettingsProperties{RegionalRoutingOn: &tt.on})
+			if req.RouteSelection == nil || *req.RouteSelection != tt.want {
+				t.Fatalf("RouteSelection = %v, want %q", req.RouteSelection, tt.want)
+			}
+		})
 	}
 }
 
