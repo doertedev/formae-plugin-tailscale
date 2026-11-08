@@ -33,10 +33,20 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           AUTH_HEADER="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w 0)"
-          git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic $AUTH_HEADER" \
-            fetch --no-tags origin \
-            "$PR_BASE_REF" \
-            "+refs/pull/$PR_NUMBER/head:refs/remotes/origin/pr/$PR_NUMBER/head"
+          for attempt in 1 2 3 4; do
+            if git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic $AUTH_HEADER" \
+              -c http.lowSpeedLimit=1 -c http.lowSpeedTime=120 \
+              fetch --no-tags origin \
+              "$PR_BASE_REF" \
+              "+refs/pull/$PR_NUMBER/head:refs/remotes/origin/pr/$PR_NUMBER/head"; then
+              break
+            fi
+            if [ "$attempt" -eq 4 ]; then
+              exit 1
+            fi
+            echo "Fetch failed (attempt $attempt/4); retrying in 5 seconds."
+            sleep 5
+          done
 
       - name: Run Codex review
         id: codex
