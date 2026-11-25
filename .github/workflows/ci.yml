@@ -88,6 +88,12 @@ jobs:
           pkl eval formae-plugin.pkl --format json > /dev/null
           echo "Manifest validated successfully"
 
+      - name: Validate Pkl package publication
+        run: |
+          PLUGIN_VERSION=$(pkl eval -x version formae-plugin.pkl)
+          test "$(pkl eval -x package.version schema/pkl/PklProject)" = "$PLUGIN_VERSION"
+          pkl project package schema/pkl --output-path .tmp/pkl-packages
+
   verify-schema:
     runs-on: ubuntu-latest
     steps:
