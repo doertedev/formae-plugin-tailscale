@@ -6,8 +6,8 @@ plugin docs (configuration, supported resources, examples), see
 
 ## Prerequisites
 
-- Go 1.26+ (matches the `go` directive in go.mod)
-- [Pkl CLI](https://pkl-lang.org/main/current/pkl-cli/index.html) 0.31.1+ (matches .tool-versions)
+- Go 1.26.11+ (matches the `go` directive in go.mod)
+- [Pkl CLI](https://pkl-lang.org/main/current/pkl-cli/index.html) 0.33.1+ (matches .tool-versions)
 - Cloud provider credentials (for conformance testing)
 
 ## Local Installation

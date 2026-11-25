@@ -30,11 +30,11 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v7
         with:
-          go-version: "1.26"
+          go-version: "1.26.11"
 
       - name: Install Pkl
         env:
-          PKL_VERSION: 0.31.1
+          PKL_VERSION: 0.33.1
         run: |
           curl -fsSL --retry 3 --retry-delay 5 --retry-all-errors --connect-timeout 30 --max-time 120 -o pkl "https://github.com/apple/pkl/releases/download/$PKL_VERSION/pkl-linux-amd64"
           chmod +x pkl
@@ -47,6 +47,11 @@ jobs:
       - name: Test
         run: make test-unit
 
+      - name: Compile live test suites without running API operations
+        run: |
+          go test -tags=integration -run '^$' ./...
+          go test -tags=conformance -run '^$' ./...
+
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -56,7 +61,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v7
         with:
-          go-version: "1.26"
+          go-version: "1.26.11"
 
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9.3.0
@@ -71,7 +76,7 @@ jobs:
 
       - name: Install Pkl
         env:
-          PKL_VERSION: 0.31.1
+          PKL_VERSION: 0.33.1
         run: |
           curl -fsSL --retry 3 --retry-delay 5 --retry-all-errors --connect-timeout 30 --max-time 120 -o pkl "https://github.com/apple/pkl/releases/download/$PKL_VERSION/pkl-linux-amd64"
           chmod +x pkl
@@ -92,11 +97,11 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v7
         with:
-          go-version: "1.26"
+          go-version: "1.26.11"
 
       - name: Install Pkl
         env:
-          PKL_VERSION: 0.31.1
+          PKL_VERSION: 0.33.1
         run: |
           curl -fsSL --retry 3 --retry-delay 5 --retry-all-errors --connect-timeout 30 --max-time 120 -o pkl "https://github.com/apple/pkl/releases/download/$PKL_VERSION/pkl-linux-amd64"
           chmod +x pkl
@@ -142,12 +147,12 @@ jobs:
         if: steps.credentials.outputs.available == 'true'
         uses: actions/setup-go@v7
         with:
-          go-version: "1.26"
+          go-version: "1.26.11"
 
       - name: Install Pkl
         if: steps.credentials.outputs.available == 'true'
         env:
-          PKL_VERSION: 0.31.1
+          PKL_VERSION: 0.33.1
         run: |
           curl -fsSL --retry 3 --retry-delay 5 --retry-all-errors --connect-timeout 30 --max-time 120 -o pkl "https://github.com/apple/pkl/releases/download/$PKL_VERSION/pkl-linux-amd64"
           chmod +x pkl
@@ -204,12 +209,12 @@ jobs:
         if: steps.credentials.outputs.available == 'true'
         uses: actions/setup-go@v7
         with:
-          go-version: "1.26"
+          go-version: "1.26.11"
 
       - name: Install Pkl
         if: steps.credentials.outputs.available == 'true'
         env:
-          PKL_VERSION: 0.31.1
+          PKL_VERSION: 0.33.1
         run: |
           curl -fsSL --retry 3 --retry-delay 5 --retry-all-errors --connect-timeout 30 --max-time 120 -o pkl "https://github.com/apple/pkl/releases/download/$PKL_VERSION/pkl-linux-amd64"
           chmod +x pkl
